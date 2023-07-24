@@ -1,12 +1,23 @@
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 
-import './App.css';
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
+]);
 
 function App() {
   return (
     <div className="App">
-      <h1 className='font-bold text-4xl text-center text-blue-600'>
-        Budget Ninja
-      </h1>
+      <RouterProvider router={appRouter} />
     </div>
   );
 }
