@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -22,10 +23,12 @@ const Login = () => {
             className="rounded-lg ml-3 text-xl font-serif"
           ></input>
         </div>
-        <button className="text-xl bg-green-500 rounded-lg font-semibold p-2 mt-2 text-white">
-          {" "}
-          Create User
-        </button>
+        <Link to="/dashboard">
+          <button className="text-xl bg-green-500 rounded-lg font-semibold p-2 mt-2 text-white">
+            {" "}
+            Create User
+          </button>
+        </Link>
       </div>
     </div>
   );

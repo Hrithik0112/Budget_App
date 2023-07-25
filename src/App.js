@@ -1,6 +1,11 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
+
+import { Provider } from "react-redux";
+import store from "./utils/store";
+import ExpenseForm from "./components/ExpenseForm";
+import ExpenseList from "./components/ExpenseList";
 import Dashboard from "./components/Dashboard";
 
 const appRouter = createBrowserRouter([
@@ -10,15 +15,17 @@ const appRouter = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: [<Dashboard />, <ExpenseList />],
   },
 ]);
 
 function App() {
   return (
-    <div className="App">
-      <RouterProvider router={appRouter} />
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <RouterProvider router={appRouter} />
+      </div>
+    </Provider>
   );
 }
 
