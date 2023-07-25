@@ -1,21 +1,13 @@
 // src/components/ExpenseList.js
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import ExpenseItem from "./ExpenseItem";
-import { removeExpense } from "../utils/expenseSlice";
 
-const ExpenseList = () => {
-  const expenses = useSelector((state) => state.expenses.expenses);
-  const dispatch = useDispatch();
-
-  const handleRemoveExpense = (id) => {
-    dispatch(removeExpense(id));
-  };
-
+const ExpenseList = ({ expenses, onRemove }) => {
+  // Make sure to destructure the `expenses` prop correctly
   return (
     <div>
       {expenses.map((expense) => (
-        <ExpenseItem key={expense.id} expense={expense} onRemove={handleRemoveExpense} />
+        <ExpenseItem key={expense.id} expense={expense} onRemove={onRemove} />
       ))}
     </div>
   );

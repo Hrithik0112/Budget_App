@@ -1,7 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ExpenseForm from "./ExpenseForm";
+import TotalAmount from "./Totalamount";
+import IncomeForm from "./IncomeForm";
+import ExpenseList from "./ExpenseList";
+import { useDispatch } from "react-redux";
 
 const Dashboard = () => {
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [expenses, setExpenses] = useState([]);
+  const [income, setIncome] = useState([]);
+  const dispatch = useDispatch();
+
+  // Function to add an expense
+  const addExpense = (expense) => {
+    setExpenses([...expenses, expense]);
+    setTotalAmount((prevTotal) => prevTotal - expense.amount);
+  };
+
+  // Function to add an income
+  const addIncome = (incomeItem) => {
+    setIncome([...income, incomeItem]);
+    setTotalAmount((prevTotal) => prevTotal + incomeItem.amount);
+  };
+
+  // Function to remove an expense
+  const onRemove = (expenseId) => {
+    // Find the expense that matches the provided ID
+    const removedExpense = expenses.find((expense) => expense.id === expenseId);
+
+    if (removedExpense) {
+      // Reduce the expense amount from the total amount
+      setTotalAmount((prevTotal) => prevTotal + removedExpense.amount);
+      // {((prevTotal) => prevTotal - removedExpense.amount)}
+      // Filter out the removed expense from the expenses state
+      setExpenses((prevExpenses) => prevExpenses.filter((expense) => expense.id !== expenseId));
+    }
+  };
+
+  // Calculate the total amount whenever expenses change
+  // useEffect(() => {
+  //   const expensesTotal = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  //   setTotalAmount(expensesTotal);
+  // }, [expenses]);
+
   return (
     <div>
       <h1 className="font-bold text-4xl text-green-600 pt-10 ml-10">
@@ -9,27 +50,13 @@ const Dashboard = () => {
         <span className="text-white bg-green-300 font-semibold rounded-md px-3">User</span>
       </h1>
       <div className=" w-max flex mt-10 p-10 ">
-        <h2 className="text-2xl mr-20 border border-black p-1">Total Budget</h2>
-        <h3 className="text-2xl border border-black p-1">0 / 900</h3>
+        <TotalAmount totalAmount={totalAmount} />
       </div>
-
-      <ExpenseForm />
-      {/* <div className="p-10 border-2 border-black w-max rounded-lg ml-10">
-        <h2 className="text-3xl font-semibold italic -mt-3 mb-2">Sub- Budget</h2>
-        <div>
-          <h3 className="text-2xl p-2">
-            Category :{" "}
-            <input placeholder="like: Food ,Rent" className="border border-black"></input>
-          </h3>
-          <h3 className="text-2xl p-2">
-            Budget :{" "}
-            <input placeholder="0 Rs." type="number" className="border border-black ml-1"></input>
-          </h3>
-          <button className="border border-black bg-green-300 text-xl translate-x-80 p-2 rounded-lg">
-            Add
-          </button>
-        </div>
-      </div> */}
+      <div className="flex">
+        <IncomeForm addIncome={addIncome} />
+        <ExpenseForm totalAmount={totalAmount} addExpense={addExpense} />
+        <ExpenseList expenses={expenses} onRemove={onRemove} />
+      </div>
     </div>
   );
 };
